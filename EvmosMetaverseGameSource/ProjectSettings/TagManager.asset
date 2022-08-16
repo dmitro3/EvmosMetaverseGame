@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CinemachineTarget
+  - Bullet
+  - Meet
+  - Weapon0
+  - QrConnectMenu
+  - IOSConnectMenu
+  - shootingArea
   layers:
   - Default
   - TransparentFX
@@ -11,9 +18,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - PostProcess
+  - Balloon
+  - Player
   - 
   - 
   - 
