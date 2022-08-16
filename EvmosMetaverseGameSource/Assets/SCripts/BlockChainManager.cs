@@ -35,6 +35,10 @@ public class BlockChainManager : MonoBehaviour
     const string network = "testnet";
     const string chainId = "80001";
 
+    const string networkRPC = "https://eth.bd.evmos.dev:8545";
+
+
+
     float[] coinCost = { 0.025f, 0.050f, 0.075f, 0.1f, 0.050f };
 
     public static float userBalance = 0;
@@ -216,7 +220,7 @@ public class BlockChainManager : MonoBehaviour
         {
 
 #if !UNITY_EDITOR
-                string response = await Web3GL.SendContract(method, abi, contract, args, value, gasLimit, gasPrice);
+                string response = await Web3GL.SendContract(method, abi, contract, args, value, gasLimit, gasPrice, Web3GL);
                 Debug.Log(response);
 #else
             //string response = await EVM.Call(chain, network, contract, abi, args, method, args);
@@ -234,28 +238,6 @@ public class BlockChainManager : MonoBehaviour
     }
     #endregion
 
-    #region CheckStatus
-    async public Task<string> ChecBurnableNFTStatus()
-    {
-        // smart contract method to call
-        string method = "checkBurnableItemStatus";
-        // array of arguments for contract
-        object[] inputParams = { PlayerPrefs.GetString("Account") };
-        string args = Newtonsoft.Json.JsonConvert.SerializeObject(inputParams);
-        try
-        {
-            // connects to user's browser wallet to call a transaction
-            string response = await EVM.Call(chain, network, contract, abi, method, args);
-            Debug.Log(response);
-            return response;
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e, this);
-            return "";
-        }
-    }
-    #endregion
 
     #region CheckTime
     public async Task<string> CheckTimeStatus()
@@ -304,7 +286,8 @@ public class BlockChainManager : MonoBehaviour
     {
         try
         {
-            string response = await EVM.BalanceOf(chain, network, PlayerPrefs.GetString("Account"));
+            
+            string response = await EVM.BalanceOf(chain, network, PlayerPrefs.GetString("Account"), networkRPC);
             if (!string.IsNullOrEmpty(response))
             {
                 float wei = float.Parse(response);
@@ -328,7 +311,7 @@ public class BlockChainManager : MonoBehaviour
     {
         try
         {
-            string txConfirmed = await EVM.TxStatus(chain, network, transID);
+            string txConfirmed = await EVM.TxStatus(chain, network, transID, networkRPC);
             print(txConfirmed); // success, fail, pending
             if (txConfirmed.Equals("success") || txConfirmed.Equals("fail"))
             {
@@ -378,7 +361,7 @@ public class BlockChainManager : MonoBehaviour
         
         try
         {
-            string response = await ERC1155.URI(chain, network, contract, "400");
+            string response = await ERC1155.URI(chain, network, contract, "400", networkRPC);
             Debug.Log(response);
         }
         catch (Exception e)
