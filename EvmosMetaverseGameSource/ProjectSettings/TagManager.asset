@@ -11,6 +11,8 @@ TagManager:
   - QrConnectMenu
   - IOSConnectMenu
   - shootingArea
+  - minigame
+  - throwcan
   layers:
   - Default
   - TransparentFX
@@ -21,7 +23,7 @@ TagManager:
   - PostProcess
   - Balloon
   - Player
-  - 
+  - Throwable
   - 
   - 
   - 

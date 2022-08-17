@@ -48,6 +48,8 @@ MonoBehaviour:
   - ChangeColour
   - HeresWhy
   - RPC_ToggleGun
+  - AttackRecieved
+  - RPC_ToggleRock
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

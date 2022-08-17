@@ -12,10 +12,12 @@ public class MetaManager : MonoBehaviour
     public Transform[] playerPoz;
     public CinemachineVirtualCamera playerCam;
     public CinemachineVirtualCamera fpsCam;
+    public CinemachineVirtualCamera throwCam;
     public UICanvasControllerInput uiInput;
     public GameObject myCam;
     public GameObject myPlayer;
 
+    public GameObject tempObject;
 
     //public static GameObject fightPlayer;
     //public static Photon.Pun.PhotonView fighterView;
