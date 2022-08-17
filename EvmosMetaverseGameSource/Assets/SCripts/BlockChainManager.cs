@@ -33,7 +33,7 @@ public class BlockChainManager : MonoBehaviour
     const string chain = "evmos";
     // set network mainnet, testnet
     const string network = "testnet";
-    const string chainId = "80001";
+    const string chainId = "9000";
 
     const string networkRPC = "https://eth.bd.evmos.dev:8545";
 
@@ -102,6 +102,9 @@ public class BlockChainManager : MonoBehaviour
         }
         playBTN.SetActive(true);
         loginBTN.SetActive(false);
+
+      
+       
 #endif
 
     }
@@ -131,6 +134,8 @@ public class BlockChainManager : MonoBehaviour
 
         playBTN.SetActive(true);
         loginBTN.SetActive(false);
+
+        //CoinBuyOnSendContract(0);
     }
 
 
@@ -220,7 +225,7 @@ public class BlockChainManager : MonoBehaviour
         {
 
 #if !UNITY_EDITOR
-                string response = await Web3GL.SendContract(method, abi, contract, args, value, gasLimit, gasPrice, Web3GL);
+                string response = await Web3GL.SendContract(method, abi, contract, args, value, gasLimit, gasPrice);
                 Debug.Log(response);
 #else
             //string response = await EVM.Call(chain, network, contract, abi, args, method, args);
@@ -315,6 +320,8 @@ public class BlockChainManager : MonoBehaviour
             print(txConfirmed); // success, fail, pending
             if (txConfirmed.Equals("success") || txConfirmed.Equals("fail"))
             {
+
+               // NonBurnNFTBuyContract(0, "ipfs://bafyreigkpnryq6t53skpbmfylegrp7wl3xkegzxq7ogimvnkzdceisya4a/metadata.json");
                 CancelInvoke("CheckTransactionStatus");
                 if (DatabaseManager.Instance)
                 {

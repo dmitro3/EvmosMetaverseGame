@@ -23,8 +23,6 @@ public class SingletonDataManager : MonoBehaviour
     public List<MyMetadataNFT> otherPlayerNFTData = new List<MyMetadataNFT>();
     public static bool isMyVirtualWorld = true;
 
-    public string contract_abi;
-    public string contract_ethAddress;
     public const string postfixMetaUrl = ".ipfs.nftstorage.link/metadata.json";
     public static string nftmetaCDI;
     // public static string tokenID;
@@ -56,11 +54,11 @@ public class SingletonDataManager : MonoBehaviour
 #if UNITY_EDITOR
         Debug.unityLogger.logEnabled = true;
 #else
-  Debug.unityLogger.logEnabled = false;
+ /* Debug.unityLogger.logEnabled = false;
           Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
         Application.SetStackTraceLogType(LogType.Warning, StackTraceLogType.None);
         Application.SetStackTraceLogType(LogType.Assert, StackTraceLogType.None);
-    Application.stackTraceLogType = StackTraceLogType.None;
+    Application.stackTraceLogType = StackTraceLogType.None;*/
 #endif
     }
     byte[] data;
