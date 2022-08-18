@@ -54,10 +54,10 @@ public class MetaManager : MonoBehaviour
 
     public void UpdatePlayerWorldProperties()
     {
-        if (SingletonDataManager.myNFTData.Count > 0)
+        if (CovalentManager.insta.myTokenID.Count > 0)
         {
             var hash = PhotonNetwork.LocalPlayer.CustomProperties;
-            hash["virtualworld"] = JsonConvert.SerializeObject(SingletonDataManager.myNFTData);
+            hash["virtualworld"] = JsonConvert.SerializeObject(CovalentManager.insta.myTokenID);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
             Debug.Log("Updated UpdatePlayerWorldProperties");
         }

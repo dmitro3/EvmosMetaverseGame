@@ -21,7 +21,7 @@ public class SingletonDataManager : MonoBehaviour
     //public List<MetaJungleNFTLocal> metanftlocalData2 = new List<MetaJungleNFTLocal>();
     public static List<MyMetadataNFT> myNFTData = new List<MyMetadataNFT>();
     public List<MyMetadataNFT> otherPlayerNFTData = new List<MyMetadataNFT>();
-    public static bool isMyVirtualWorld = true;
+    
 
     public const string postfixMetaUrl = ".ipfs.nftstorage.link/metadata.json";
     public static string nftmetaCDI;

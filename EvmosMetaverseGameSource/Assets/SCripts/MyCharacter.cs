@@ -72,7 +72,9 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
     [SerializeField] Vector3 aimWorldPos;
     [SerializeField] GameObject ParticleEffect;
     Cinemachine3rdPersonFollow followCam;
-    
+
+
+    LocalData localData;
 
 
     private void Awake()
@@ -113,6 +115,7 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
         if (pview.IsMine)
         {
 
+
             _customInput.Player.Attack.performed += Attack_performed;
             _customInput.Player.Attack.canceled += Attack_canceled;
 
@@ -146,7 +149,8 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
             shootBulletBtn.onClick.AddListener(ShootBullet);
 
 
-
+            localData = DatabaseManager.Instance.GetLocalData();
+            UIManager.insta.UpdatePlayerUIData(true, localData);
 
         }
         else
@@ -458,15 +462,16 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
         pview.RPC("RequestFightRPC", RpcTarget.All, pview.Owner.UserId);
         Debug.Log("RequestFight My " + MetaManager.insta.myPlayer.GetComponent<PhotonView>().Owner.UserId + " | figher " + MetaManager._fighterid);
         UIManager.insta.UpdateStatus("Fight request sent to\n" + pview.Owner.NickName);
+//        virtualWorldUI.SetActive(false);
     }
 
     public void VisitVirtualWorld()
     {
-        if (SingletonDataManager.insta.otherPlayerNFTData != null) SingletonDataManager.insta.otherPlayerNFTData.Clear();
-        SingletonDataManager.insta.otherPlayerNFTData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MyMetadataNFT>>(pview.Owner.CustomProperties["virtualworld"].ToString());
+        if (CovalentManager.insta.otherTokenID != null) CovalentManager.insta.otherTokenID.Clear();
+        CovalentManager.insta.otherTokenID = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(pview.Owner.CustomProperties["virtualworld"].ToString());
         Debug.Log("data" + pview.Owner.CustomProperties["virtualworld"].ToString());
 
-        if (SingletonDataManager.insta.otherPlayerNFTData != null) UIManager.insta.VisitOtherPlayerVirtualWorld();
+        if (CovalentManager.insta.otherTokenID != null) UIManager.insta.VisitOtherPlayerVirtualWorld();
         else MessaeBox.insta.showMsg("No virtual world item", true);
     }
 
@@ -555,9 +560,11 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     Debug.Log("UserLost");
                     AudioManager.insta.playSound(7);
-                    SingletonDataManager.userData.fightLose++;
-                    SingletonDataManager.insta.UpdateUserDatabase();
+                    LocalData data = DatabaseManager.Instance.GetLocalData();
+                    data.gameLoss++;
+                    DatabaseManager.Instance.UpdateData(data);
                     UIManager.insta.ShowResult(1);
+                    UIManager.insta.UpdatePlayerUIData(true, data);
                 }
             }
 
@@ -682,10 +689,12 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
             tController.isDragging = false;
             CameraSwitcher.SwitchCamera(MetaManager.insta.playerCam);
 
-            if (balloonBursted >= 5 && SingletonDataManager.insta)
+            if (balloonBursted >= 5 && DatabaseManager.Instance)
             {
-                SingletonDataManager.userData.score++;
-                SingletonDataManager.insta.UpdateUserDatabase();
+                LocalData data = DatabaseManager.Instance.GetLocalData();
+                data.score++;
+                DatabaseManager.Instance.UpdateData(data);
+                UIManager.insta.UpdatePlayerUIData(true, data);
             }
 
             AudioManager.insta.playSound(11);
@@ -929,10 +938,13 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
             tController.isDragging = false;
             CameraSwitcher.SwitchCamera(MetaManager.insta.playerCam);
 
-            if (won && SingletonDataManager.insta)
+            if (won && DatabaseManager.Instance)
             {
-                SingletonDataManager.userData.score++;
-                SingletonDataManager.insta.UpdateUserDatabase();
+                LocalData data = DatabaseManager.Instance.GetLocalData();
+                data.score++;
+                DatabaseManager.Instance.GetLocalData();
+                DatabaseManager.Instance.UpdateData(data);
+                UIManager.insta.UpdatePlayerUIData(true, data);
             }
 
             AudioManager.insta.playSound(11);
@@ -973,10 +985,12 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     Debug.Log("User Winner");
                     AudioManager.insta.playSound(6);
-                    SingletonDataManager.userData.fightWon++;
-                    SingletonDataManager.userData.score++;
-                    SingletonDataManager.insta.UpdateUserDatabase();
+                    LocalData data = DatabaseManager.Instance.GetLocalData();
+                    data.gameWon++;
+                    data.score++;
+                    DatabaseManager.Instance.UpdateData(data);
                     UIManager.insta.ShowResult(0);
+                    UIManager.insta.UpdatePlayerUIData(true, data);
                 }
 
 
@@ -1068,6 +1082,7 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
                         }
                         SelectWeapon();
                         AudioManager.insta.playSound(4);
+                        virtualWorldUI.SetActive(false);
                     }
                     else
                     {

@@ -81,8 +81,8 @@ public class UIManager : MonoBehaviour
         statusText.text = "";
         healthSlider.value = 1;
 
-        UpdatePlayerUIData(true, true);
-        UpdateUserName(SingletonDataManager.username, SingletonDataManager.userethAdd);
+        //UpdatePlayerUIData(true, true);
+        UpdateUserName(DatabaseManager.Instance.GetLocalData().name, SingletonDataManager.userethAdd);
 
         if (PlayerPrefs.GetInt("init", 0) == 0)
         {
@@ -98,7 +98,7 @@ public class UIManager : MonoBehaviour
     {
         if (_show)
         {
-            if (SingletonDataManager.myNFTData.Count > 0)
+            if (CovalentManager.insta.myTokenID.Count > 0)
                 myCollectionUI.SetActive(true);
             else MessaeBox.insta.showMsg("Nothing in collection", true);
         }
@@ -125,7 +125,7 @@ public class UIManager : MonoBehaviour
 
         if (_no == 0)
         {
-            if (SingletonDataManager.myNFTData.Count == 0)
+            if (CovalentManager.insta.myTokenID.Count == 0)
                 MessaeBox.insta.showMsg("Get land for your virtual world from store", true);
             else MessaeBox.insta.showMsg("Earned 1 coin", true);
         }
@@ -136,9 +136,9 @@ public class UIManager : MonoBehaviour
 
         if (_show && !MetaManager.inVirtualWorld && !MetaManager.isFighting && !MetaManager.isShooting)
         {
-            if (SingletonDataManager.myNFTData.Count > 0)
+            if (CovalentManager.insta.myTokenID.Count > 0)
             {
-                SingletonDataManager.isMyVirtualWorld = true;
+                CovalentManager.isMyVirtualWorld = true;
                 VirtualWorldObj.SetActive(true);
                 MetaManager.inVirtualWorld = true;
             }
@@ -160,10 +160,10 @@ public class UIManager : MonoBehaviour
     public void VisitOtherPlayerVirtualWorld()
     {
 
-        if (SingletonDataManager.insta.otherPlayerNFTData.Count > 0)
+        if (CovalentManager.insta.otherTokenID.Count > 0)
         {
             Debug.Log("Virtual world available");
-            SingletonDataManager.isMyVirtualWorld = false;
+            CovalentManager.isMyVirtualWorld = false;
             VirtualWorldObj.SetActive(true);
             MetaManager.inVirtualWorld = true;
         }
@@ -218,19 +218,19 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    public void UpdatePlayerUIData(bool _show, bool _init = false)
+    public void UpdatePlayerUIData(bool _show,LocalData data, bool _init = false)
     {
         if (_show)
         {
             if (_init)
             {
-                nameInput.text = SingletonDataManager.username;
-                SelectGender(SingletonDataManager.userData.characterNo);
+                nameInput.text = data.name;
+                SelectGender(data.characterNo);
             }
 
-            scoreTxt.text = SingletonDataManager.userData.score.ToString();
-            winCountTxt.text = SingletonDataManager.userData.fightWon.ToString();
-            lostCountTxt.text = SingletonDataManager.userData.fightLose.ToString();
+            scoreTxt.text = data.score.ToString();
+            winCountTxt.text = data.gameWon.ToString();
+            lostCountTxt.text = data.gameLoss.ToString();
             if (PhotonNetwork.LocalPlayer.CustomProperties["health"] != null) healthSlider.value = float.Parse(PhotonNetwork.LocalPlayer.CustomProperties["health"].ToString());
         }
         else
@@ -238,6 +238,54 @@ public class UIManager : MonoBehaviour
             GameplayUI.SetActive(false);
         }
     }
+    public void UpdatePlayerUIData(bool _show, bool _init = false)
+    {
+        if (_show)
+        {           
+            if (PhotonNetwork.LocalPlayer.CustomProperties["health"] != null) healthSlider.value = float.Parse(PhotonNetwork.LocalPlayer.CustomProperties["health"].ToString());
+        }
+        else
+        {
+            GameplayUI.SetActive(false);
+        }
+    }
+
+
+    public TMP_Text txt_information;
+    public void ShowBurnableNFTConfimation(int _id, string status)
+    {
+        txt_information.transform.parent.gameObject.SetActive(true);
+        if (status.Equals("success"))
+        {
+            txt_information.text = "Coin Purchase of " + status + " successful";
+        }
+        else
+        {
+            txt_information.text = "Coin Purchase of " + status + " Failed";
+        }
+
+        StartCoroutine(disableTextInfo());
+    }
+    public void ShowCoinPurchaseStatus(TranscationInfo info)
+    {
+        txt_information.transform.parent.gameObject.SetActive(true);
+        if (info.transactionStatus.Equals("success"))
+        {
+            txt_information.text = "Coin Purchase of " + info.coinAmount + " successful";
+        }
+        else
+        {
+            txt_information.text = "Coin Purchase of " + info.coinAmount + " Failed";
+        }
+
+        StartCoroutine(disableTextInfo());
+    }
+    IEnumerator disableTextInfo()
+    {
+        yield return new WaitForSeconds(3f);
+        txt_information.transform.parent.gameObject.SetActive(false);
+    }
+
 
     public void MuteUnmute()
     {
@@ -301,6 +349,11 @@ public class UIManager : MonoBehaviour
 
     public void EditUserProfile()
     {
+        if (DatabaseManager.Instance != null)
+        {
+            nameInput.text = DatabaseManager.Instance.GetLocalData().name;
+        }
+
         usernameUI.SetActive(true);
         StartUI.SetActive(false);
     }

@@ -30,7 +30,7 @@ public class DatabaseManager : MonoBehaviour
 
     private LocalData data=new LocalData();
 
-    public static List<MetaFunNFTLocal> allMetaDataServer = new List<MetaFunNFTLocal>();
+    public static  List<MetaFunNFTLocal> allMetaDataServer = new List<MetaFunNFTLocal>();
     public LocalData GetLocalData()
     {
        
@@ -40,7 +40,7 @@ public class DatabaseManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(getNFTAllData());
+       StartCoroutine(getNFTAllData());
        // GetData();
     }
     IEnumerator updateProfile(int dataType, bool createnew = false)
@@ -104,6 +104,10 @@ public class DatabaseManager : MonoBehaviour
                 //JSONObject obj = new JSONObject(www.downloadHandler.text);
                 Debug.Log(www.downloadHandler.text);
                 //Debug.Log(obj.GetField("fields").GetField("musedata").GetField("stringValue").stringValue);
+                if (UIManager.insta)
+                {
+                    UIManager.insta.UpdatePlayerUIData(true, data);
+                }
             }
         }
     }
@@ -180,10 +184,13 @@ public class DatabaseManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("getNFTAllData  found " + www.downloadHandler.text);
                 JSONObject obj = new JSONObject(www.downloadHandler.text);
-                Debug.Log(obj);
-                //Debug.Log("CheckProfile " + www.downloadHandler.text);
+
+
                 //data = Newtonsoft.Json.JsonConvert.DeserializeObject<LocalData>(obj.GetField("fields").GetField("data").GetField("stringValue").stringValue);
+                Debug.Log("Data >>  " + obj);
+
                 allMetaDataServer = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MetaFunNFTLocal>>(obj.GetField("fields").GetField("data").GetField("stringValue").stringValue);
                 
                 GetAllNFTImg();
@@ -319,7 +326,7 @@ public class DatabaseManager : MonoBehaviour
                 data.score += trans_info.coinAmount;
                 data.transactionsInformation.RemoveAt(index);
             }
-           /// UIManager.insta.ShowCoinPurchaseStatus(trans_info);
+            UIManager.insta.ShowCoinPurchaseStatus(trans_info);
 
             UpdateData(data);
 

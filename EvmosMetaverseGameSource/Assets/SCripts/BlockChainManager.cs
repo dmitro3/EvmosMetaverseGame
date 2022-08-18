@@ -234,6 +234,10 @@ public class BlockChainManager : MonoBehaviour
             string data = await EVM.CreateContractData(abi, method, args);
             string response = await Web3Wallet.SendTransaction(chainId, contract, "0", data, gasLimit, gasPrice);
             Debug.Log(response);
+            if (CovalentManager.insta)
+            {
+                CovalentManager.insta.GetNFTUserBalance();
+            }
 #endif
             if (MessaeBox.insta) MessaeBox.insta.showMsg("Your Transaction has been recieved\nIt will reflect to your account once it is completed!", true);
         }

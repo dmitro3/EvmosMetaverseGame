@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,11 +35,11 @@ public class StoreManager : MonoBehaviour
     {
         ClosePurchasePanel();
 
-      /*  if (CovalentManager.loadingData) {
+        if (CovalentManager.loadingData) {
             MessaeBox.insta.showMsg("Loading Data",true);
             CloseItemPanel();
             return;
-        }*/
+        }
 
 
         foreach (Transform child in itemParent)
@@ -46,33 +47,39 @@ public class StoreManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        for (int i = 0; i < SingletonDataManager.metanftlocalData.Count; i++)
+        //CovalentManager.insta.GetNFTUserBalance();
+
+        for (int i = 0; i < DatabaseManager.allMetaDataServer.Count; i++)
         {
             bool check = false;
             bool unlocked = false;
-            for (int j = 0; j < SingletonDataManager.myNFTData.Count; j++)
+
+            Debug.Log(CovalentManager.insta.myTokenID.Count);
+
+            for (int j = 0; j < CovalentManager.insta.myTokenID.Count; j++)
             {
-                //Debug.Log("checkID " + SingletonDataManager.myNFTData[i].itemid);
-                if (SingletonDataManager.myNFTData[j].itemid == i)
+
+                Debug.Log("Parse Value : " + Int32.Parse(CovalentManager.insta.myTokenID[j]));
+                if (Int32.Parse(CovalentManager.insta.myTokenID[j]) == DatabaseManager.allMetaDataServer[i].itemid)
                 {
                     check = true;
                     //break;
                     //continue;
                 }
-                if (SingletonDataManager.myNFTData[j].itemid == 0) unlocked = true;
+                if (Int32.Parse(CovalentManager.insta.myTokenID[j]) == 400) unlocked = true;
             }
 
-            //Debug.Log("check " + check + " | " + i);
+            Debug.Log("check " + check + " | " + DatabaseManager.allMetaDataServer[i].itemid);
             if (!check)
             {
                 var temp = Instantiate(itemButtonPrefab, itemParent);
-                temp.GetComponent<RawImage>().texture = SingletonDataManager.metanftlocalData[i].imageTexture;
-                temp.transform.GetChild(0).GetComponent<TMP_Text>().text = SingletonDataManager.metanftlocalData[i].cost.ToString();
+                temp.GetComponent<RawImage>().texture = DatabaseManager.allMetaDataServer[i].imageTexture;
+                temp.transform.GetChild(0).GetComponent<TMP_Text>().text = DatabaseManager.allMetaDataServer[i].cost.ToString();
                 var tempNo = i;
-                var tempTexture = SingletonDataManager.metanftlocalData[i].imageTexture;
+                var tempTexture = DatabaseManager.allMetaDataServer[i].imageTexture;
                 temp.GetComponent<Button>().onClick.AddListener(() => SelectItem(tempNo, tempTexture));
 
-                if (!unlocked && i != 0) temp.GetComponent<Button>().interactable = false;
+                if (!unlocked && i != 400) temp.GetComponent<Button>().interactable = false;
             }
         }
         //SingletonDataManager.insta.LoadPurchasedItems();
@@ -86,8 +93,8 @@ public class StoreManager : MonoBehaviour
         itemPanelUI.SetActive(false);
         itemPurchaseUI.SetActive(true);
         purchaseItemImg.texture = _texture;// itemButtons[_no].GetComponent<RawImage>().texture;
-        purchaseItemText.text = SingletonDataManager.metanftlocalData[_no].description;
-        purchaseItemCostText.text = SingletonDataManager.metanftlocalData[_no].cost.ToString();
+        purchaseItemText.text = DatabaseManager.allMetaDataServer[_no].description;
+        purchaseItemCostText.text = DatabaseManager.allMetaDataServer[_no].cost.ToString();
 
 
     }
@@ -95,16 +102,22 @@ public class StoreManager : MonoBehaviour
     public void purchaseItem()
     {
         Debug.Log("purchaseItem");
+        LocalData data = DatabaseManager.Instance.GetLocalData();
         MetadataNFT meta = new MetadataNFT();
-        if (SingletonDataManager.userData.score >= SingletonDataManager.metanftlocalData[currentSelectedItem].cost)
+
+        if (data.score >= DatabaseManager.allMetaDataServer[currentSelectedItem].cost)
         {
-            meta.itemid = SingletonDataManager.metanftlocalData[currentSelectedItem].itemid;
-            meta.name = SingletonDataManager.metanftlocalData[currentSelectedItem].name;
-            meta.description = SingletonDataManager.metanftlocalData[currentSelectedItem].description;
-            meta.image = SingletonDataManager.metanftlocalData[currentSelectedItem].imageurl;
+            meta.itemid = DatabaseManager.allMetaDataServer[currentSelectedItem].itemid;
+            meta.name = DatabaseManager.allMetaDataServer[currentSelectedItem].name;
+            meta.description = DatabaseManager.allMetaDataServer[currentSelectedItem].description;
+            meta.image = DatabaseManager.allMetaDataServer[currentSelectedItem].imageurl;
             //meta.itemid = SingletonDataManager.metanftlocalData[currentSelectedItem].
 
-           // NFTPurchaser.insta.StartCoroutine(NFTPurchaser.insta.UploadNFTMetadata(Newtonsoft.Json.JsonConvert.SerializeObject(meta), SingletonDataManager.metanftlocalData[currentSelectedItem].cost, SingletonDataManager.metanftlocalData[currentSelectedItem].itemid));
+            // NFTPurchaser.insta.StartCoroutine(NFTPurchaser.insta.UploadNFTMetadata(Newtonsoft.Json.JsonConvert.SerializeObject(meta), SingletonDataManager.metanftlocalData[currentSelectedItem].cost, SingletonDataManager.metanftlocalData[currentSelectedItem].itemid));
+            BlockChainManager.Instance.purchaseItem(currentSelectedItem,false);
+
+            data.score -= DatabaseManager.allMetaDataServer[currentSelectedItem].cost;
+            DatabaseManager.Instance.UpdateData(data);
         }
         else
         {

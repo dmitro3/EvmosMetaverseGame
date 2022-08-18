@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -42,11 +43,11 @@ public class MyNFTCollection : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        for (int i = 0; i < SingletonDataManager.myNFTData.Count; i++)
+        for (int i = 0; i < CovalentManager.insta.myTokenID.Count; i++)
         {
             var temp = Instantiate(itemButtonPrefab, itemParent);
-            temp.GetComponent<RawImage>().texture = SingletonDataManager.metanftlocalData[SingletonDataManager.myNFTData[i].itemid].imageTexture;
-            var tempNo = i;
+            temp.GetComponent<RawImage>().texture = DatabaseManager.allMetaDataServer[Int32.Parse(CovalentManager.insta.myTokenID[i])-400].imageTexture;
+            var tempNo = Int32.Parse(CovalentManager.insta.myTokenID[i]) - 400;
             var tempTexture = temp.GetComponent<RawImage>().texture;
             temp.GetComponent<Button>().onClick.AddListener(() => SelectItem(tempNo, tempTexture));
         }
@@ -61,11 +62,8 @@ public class MyNFTCollection : MonoBehaviour
         itemPanelUI.SetActive(false);
         itemPurchaseUI.SetActive(true);
         purchaseItemImg.texture = _texture;// itemButtons[_no].GetComponent<RawImage>().texture;
-        purchaseItemText.text = SingletonDataManager.myNFTData[_no].description;
-
+        purchaseItemText.text = DatabaseManager.allMetaDataServer[_no].description;
     }
-
-
 
     public void ClosePurchasePanel()
     {

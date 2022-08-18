@@ -36,6 +36,7 @@ public class MetaFunNFTLocal
     public string name;
     public string description;
     public string imageurl;
+    public int cost;
     public Texture imageTexture;
 }
 
