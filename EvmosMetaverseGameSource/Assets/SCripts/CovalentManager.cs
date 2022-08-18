@@ -20,7 +20,7 @@ public class CovalentManager : MonoBehaviour
 
     //public List<MyMetadataNFT> myNFTData = new List<MyMetadataNFT>();
 
-    public static bool loadingData = false;
+    public bool loadingData = false;
     public static bool isMyVirtualWorld = true;
 
     private void Awake()

@@ -35,7 +35,8 @@ public class StoreManager : MonoBehaviour
     {
         ClosePurchasePanel();
 
-        if (CovalentManager.loadingData) {
+        //CovalentManager.insta.GetNFTUserBalance();
+        if (CovalentManager.insta.loadingData) {
             MessaeBox.insta.showMsg("Loading Data",true);
             CloseItemPanel();
             return;
@@ -79,7 +80,7 @@ public class StoreManager : MonoBehaviour
                 var tempTexture = DatabaseManager.allMetaDataServer[i].imageTexture;
                 temp.GetComponent<Button>().onClick.AddListener(() => SelectItem(tempNo, tempTexture));
 
-                if (!unlocked && i != 400) temp.GetComponent<Button>().interactable = false;
+                if (!unlocked && i != 0) temp.GetComponent<Button>().interactable = false;
             }
         }
         //SingletonDataManager.insta.LoadPurchasedItems();

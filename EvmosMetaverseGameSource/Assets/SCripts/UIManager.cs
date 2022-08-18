@@ -365,8 +365,10 @@ public class UIManager : MonoBehaviour
 
         usernameUI.SetActive(false);
 
-        SingletonDataManager.insta.submitName(username);
-
+        LocalData data = DatabaseManager.Instance.GetLocalData();
+        data.name = username;
+        data.characterNo = usergender;
+        DatabaseManager.Instance.UpdateData(data);
         StartUI.SetActive(true);
 
     }
@@ -385,7 +387,13 @@ public class UIManager : MonoBehaviour
         }
 
         usergender = _no;
-        SingletonDataManager.userData.characterNo = _no;
+        //SingletonDataManager.userData.characterNo = _no;
+
+        LocalData data = DatabaseManager.Instance.GetLocalData();
+        //data.name = username;
+        data.characterNo = usergender;
+        DatabaseManager.Instance.UpdateData(data);
+
     }
 
 
