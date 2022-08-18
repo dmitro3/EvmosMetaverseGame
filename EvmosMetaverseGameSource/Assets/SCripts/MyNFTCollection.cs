@@ -25,6 +25,7 @@ public class MyNFTCollection : MonoBehaviour
     private void Awake()
     {
         insta = this;
+        this.gameObject.SetActive(false);
     }
 
     private void OnEnable()
