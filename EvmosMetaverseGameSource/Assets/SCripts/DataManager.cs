@@ -8,14 +8,6 @@ public class DataManager
 
 }
 
-[System.Serializable]
-public class localuserData
-{
-    public int fightWon = 0;
-    public int fightLose = 0;
-    public int score = 0;
-    public int characterNo = 0;
-}
 
 
 [System.Serializable]

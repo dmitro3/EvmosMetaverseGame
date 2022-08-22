@@ -270,22 +270,19 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
            
                 if (inShootingMode)
                 {
-
-                aimWorldPos = cam.transform.position + cam.transform.forward * 200f;
+                    aimWorldPos = cam.transform.position + cam.transform.forward * 200f;
                     Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
                     Ray ray = cam.ScreenPointToRay(center);
                     if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, aimColliderMask))
                     {
                         aimWorldPos = raycastHit.point;                        
-                        crossHair.SetActive(true);
-                        
+                        crossHair.SetActive(true);                        
                     }
                     else
                     {
                         crossHair.SetActive(false);
                     }
 
-                    
                     if (_customInput.Player.Attack.triggered && shootBulletBtn.interactable && (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()))
                     {
                         if (throwableObject.activeInHierarchy)
@@ -296,12 +293,8 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
                         {
                             ShootBullet();
                         }
-
                     }
                 }
-
-            
-
         }
 
         //if (!tController.Grounded)

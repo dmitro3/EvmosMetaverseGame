@@ -12,7 +12,7 @@ public class SingletonDataManager : MonoBehaviour
 {
     public static SingletonDataManager insta;
 
-    public static localuserData userData = new localuserData();
+    
     public static string username;
     public static string userethAdd;
     public static string useruniqid;
