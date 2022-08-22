@@ -169,7 +169,7 @@ namespace StarterAssets
         public bool can_move=true;
         private void Update()
         {
-            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+           // if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
 
             
 
@@ -182,7 +182,7 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+            //if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
             CameraRotation();
         }
 

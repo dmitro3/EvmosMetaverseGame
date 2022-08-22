@@ -277,7 +277,6 @@ public class UIManager : MonoBehaviour
         {
             txt_information.text = "Coin Purchase of " + info.coinAmount + " Failed";
         }
-
         StartCoroutine(disableTextInfo());
     }
     IEnumerator disableTextInfo()
@@ -302,8 +301,6 @@ public class UIManager : MonoBehaviour
             recorder.StartRecord();
             recorderImg.sprite = recorderSprites[0];
         }
-
-
     }
 
     public void MuteUnmuteListner()
@@ -362,7 +359,6 @@ public class UIManager : MonoBehaviour
         if (nameInput.text.Length > 0 && !nameInput.text.Contains("Enter")) username = nameInput.text;
         else username = "Player_" + Random.Range(11111, 99999);
 
-
         usernameUI.SetActive(false);
 
         LocalData data = DatabaseManager.Instance.GetLocalData();
@@ -370,7 +366,6 @@ public class UIManager : MonoBehaviour
         data.characterNo = usergender;
         DatabaseManager.Instance.UpdateData(data);
         StartUI.SetActive(true);
-
     }
 
     public void SelectGender(int _no)

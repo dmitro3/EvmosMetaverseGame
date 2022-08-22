@@ -110,7 +110,9 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
             weaponStartPosz[i] = weapons[i].transform.localPosition;
             weaponStartRotz[i] = weapons[i].transform.localRotation;
         }
-        
+        throwableStartPosz = throwableObject.transform.localPosition;
+        throwableStartRotz = throwableObject.transform.localRotation;
+
 
 
         if (pview.IsMine)
@@ -269,6 +271,7 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
                 if (inShootingMode)
                 {
 
+                aimWorldPos = cam.transform.position + cam.transform.forward * 200f;
                     Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
                     Ray ray = cam.ScreenPointToRay(center);
                     if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, aimColliderMask))

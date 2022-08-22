@@ -4377,6 +4377,10 @@ PrefabInstance:
       propertyPath: AttackForce
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1925873226565265913, guid: 2553cec8fdb3eb643bbe9f2ec880c472, type: 3}
+      propertyPath: BottomClamp
+      value: -45
+      objectReference: {fileID: 0}
     - target: {fileID: 1925873226565265918, guid: 2553cec8fdb3eb643bbe9f2ec880c472, type: 3}
       propertyPath: m_DefaultControlScheme
       value: 
