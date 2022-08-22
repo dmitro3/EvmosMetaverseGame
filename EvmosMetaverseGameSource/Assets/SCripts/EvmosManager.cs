@@ -7,10 +7,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class BlockChainManager : MonoBehaviour
+public class EvmosManager : MonoBehaviour
 {
     #region Singleton
-    public static BlockChainManager Instance;
+    public static EvmosManager Instance;
     private void Awake()
     {
         if (Instance == null)

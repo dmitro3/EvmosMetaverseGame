@@ -115,7 +115,7 @@ public class StoreManager : MonoBehaviour
             //meta.itemid = SingletonDataManager.metanftlocalData[currentSelectedItem].
 
             // NFTPurchaser.insta.StartCoroutine(NFTPurchaser.insta.UploadNFTMetadata(Newtonsoft.Json.JsonConvert.SerializeObject(meta), SingletonDataManager.metanftlocalData[currentSelectedItem].cost, SingletonDataManager.metanftlocalData[currentSelectedItem].itemid));
-            BlockChainManager.Instance.purchaseItem(currentSelectedItem,false);
+            EvmosManager.Instance.purchaseItem(currentSelectedItem,false);
 
             data.score -= DatabaseManager.allMetaDataServer[currentSelectedItem].cost;
             DatabaseManager.Instance.UpdateData(data);

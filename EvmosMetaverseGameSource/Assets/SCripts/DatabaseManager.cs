@@ -153,7 +153,7 @@ public class DatabaseManager : MonoBehaviour
                         if (data.transactionsInformation[i].transactionStatus.Equals("pending"))
                         {
                             Debug.Log("Pending Test 1");
-                            BlockChainManager.Instance.CheckDatabaseTransactionStatus(data.transactionsInformation[i].transactionId);                         
+                            EvmosManager.Instance.CheckDatabaseTransactionStatus(data.transactionsInformation[i].transactionId);                         
                         }
                     }
                 }
@@ -265,7 +265,7 @@ public class DatabaseManager : MonoBehaviour
     async public Task<long> GetCurrentTime()
     {
         
-        string result =await BlockChainManager.Instance.CheckTimeStatus();
+        string result =await EvmosManager.Instance.CheckTimeStatus();
        
         long currentEpoch;
         if (!string.IsNullOrEmpty(result))
@@ -364,7 +364,7 @@ public class LocalData
     public string name;
     public int gameWon = 0;
     public int gameLoss = 0;
-    public int score = 10;
+    public int score = 0;
     public int characterNo = 0;
     public int level = 0;
     public int selected_road=0;
@@ -377,7 +377,7 @@ public class LocalData
         name = "Player";
         gameWon = 0;
         gameLoss = 0;
-        score = 10;
+        score = 0;
         characterNo = 0;
         characterNo = 0;
         xp = 0;

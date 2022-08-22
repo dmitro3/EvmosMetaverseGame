@@ -31,6 +31,7 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
 
     [SerializeField] GameObject virtualWorldUI;
     [SerializeField] GameObject meetUI;
+    [SerializeField] GameObject UiParent;
 
     [SerializeField] GameObject WeaponCollider;
     [SerializeField] GameObject handAttackCollider;
@@ -188,6 +189,11 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
 
         meetUI.transform.LookAt(MetaManager.insta.myCam.transform);
         meetUI.transform.rotation = Quaternion.LookRotation(MetaManager.insta.myCam.transform.forward);
+
+        UiParent.transform.LookAt(MetaManager.insta.myCam.transform);
+        UiParent.transform.rotation = Quaternion.LookRotation(MetaManager.insta.myCam.transform.forward);
+
+        
 
         virtualWorldUI.transform.LookAt(MetaManager.insta.myCam.transform);
         virtualWorldUI.transform.rotation = Quaternion.LookRotation(MetaManager.insta.myCam.transform.forward);

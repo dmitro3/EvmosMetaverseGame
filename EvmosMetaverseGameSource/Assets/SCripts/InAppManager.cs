@@ -46,7 +46,7 @@ public class InAppManager : MonoBehaviour
 
     public void purchaseItem(int index)
     {
-        BlockChainManager.Instance.CoinBuyOnSendContract(index);
+        EvmosManager.Instance.CoinBuyOnSendContract(index);
     }
 
     public void ClosePurchasePanel()
