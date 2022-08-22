@@ -410,6 +410,10 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             shootingAreaBtn.gameObject.SetActive(false);
         }
+        else if (other.CompareTag("throwcan"))
+        {
+            shootingAreaBtn.gameObject.SetActive(false);
+        }
     }
 
     #region weapons
