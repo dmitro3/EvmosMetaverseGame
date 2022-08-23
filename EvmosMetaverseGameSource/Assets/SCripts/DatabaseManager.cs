@@ -288,22 +288,22 @@ public class DatabaseManager : MonoBehaviour
         {
             case 0:
                 {
-                    info.coinAmount = 20;
+                    info.coinAmount = 2;
                     break;
                 }
             case 1:
                 {
-                    info.coinAmount = 50;
+                    info.coinAmount = 5;
                     break;
                 }
             case 2:
                 {
-                    info.coinAmount = 100;
+                    info.coinAmount = 10;
                     break;
                 }
             case 3:
                 {
-                    info.coinAmount = 200;
+                    info.coinAmount = 20;
                     break;
                 }
         }
