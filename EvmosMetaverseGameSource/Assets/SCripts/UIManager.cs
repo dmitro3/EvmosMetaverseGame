@@ -392,6 +392,66 @@ public class UIManager : MonoBehaviour
     }
 
 
+
+    #region Mini game complete
+
+    [Header("Game Complete")]
+    [SerializeField] GameObject gameCompleteUI;
+    [SerializeField] TMP_Text txt_gamestatus;
+    [SerializeField] TMP_Text txt_gamename;
+    [SerializeField] TMP_Text txt_scoreChange;
+    public void OpenGameCompleteUI(bool won,int gameIndex)
+    {
+        switch (gameIndex)
+        {
+            case 0:
+                {
+                    txt_gamename.text = "Balloon Shoot Game";
+
+                    if (won)
+                    {
+                        txt_gamestatus.text = "Won!";
+                        txt_scoreChange.text = "Coins Change: +1";
+                    }
+                    else
+                    {
+                        txt_gamestatus.text = "Lose!";
+                        txt_scoreChange.text = "Coins Change: 0";
+                    }
+                    break;
+                }
+            case 1:
+                {
+                    txt_gamename.text = "Cans Throw";
+
+                    if (won)
+                    {
+                        txt_gamestatus.text = "Won!";
+                        txt_scoreChange.text = "Coins Change: +1";
+                    }
+                    else
+                    {
+                        txt_gamestatus.text = "Lose!";
+                        txt_scoreChange.text = "Coins Change: 0";
+                    }
+                    break;
+                }
+        }
+        gameCompleteUI.SetActive(true);
+        LeanTween.scale(gameCompleteUI.transform.GetChild(0).gameObject, Vector3.one, 0.5f).setFrom(Vector3.zero).setEase(LeanTweenType.easeInQuad);
+        MetaManager.insta.myPlayer.GetComponent<MyCharacter>().ToggleMovement(false);
+    }
+
+    public void CloseCompleteUI()
+    {
+        LeanTween.scale(gameCompleteUI.transform.GetChild(0).gameObject, Vector3.zero, 0.3f).setFrom(Vector3.one).setEase(LeanTweenType.easeInQuad).setOnComplete(()=> {
+            gameCompleteUI.SetActive(false);
+        });
+        MetaManager.insta.myPlayer.GetComponent<MyCharacter>().ToggleMovement(true);
+    }
+    #endregion
+
+
     #region FightREquest
     public void FightReq(string _userdata)
     {

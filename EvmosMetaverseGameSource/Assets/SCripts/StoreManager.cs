@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,32 +25,44 @@ public class StoreManager : MonoBehaviour
     //item panel stuff
     [SerializeField] GameObject itemButtonPrefab;
 
+    [SerializeField] GameObject mainPanel;
+    [SerializeField] GameObject loadingPanel;
+
     private void Awake()
     {
         insta = this;
     }
 
 
-
+    
     private void OnEnable()
     {
         ClosePurchasePanel();
 
-        //CovalentManager.insta.GetNFTUserBalance();
-        if (CovalentManager.insta.loadingData) {
-            MessaeBox.insta.showMsg("Loading Data",true);
-            CloseItemPanel();
-            return;
-        }
+        mainPanel.SetActive(false);
+        loadingPanel.SetActive(true);
 
+       
 
         foreach (Transform child in itemParent)
         {
             Destroy(child.gameObject);
         }
 
+        CovalentManager.insta.GetNFTUserBalance();
+
+        StopCoroutine(instantiateShop());
+        StartCoroutine(instantiateShop());
+
         //CovalentManager.insta.GetNFTUserBalance();
 
+        
+        //SingletonDataManager.insta.LoadPurchasedItems();
+    }
+
+    IEnumerator instantiateShop()
+    {
+        yield return new WaitUntil(()=> !CovalentManager.insta.loadingData);
         for (int i = 0; i < DatabaseManager.allMetaDataServer.Count; i++)
         {
             bool check = false;
@@ -83,9 +96,10 @@ public class StoreManager : MonoBehaviour
                 if (!unlocked && i != 0) temp.GetComponent<Button>().interactable = false;
             }
         }
-        //SingletonDataManager.insta.LoadPurchasedItems();
-    }
+        loadingPanel.SetActive(false);
+        mainPanel.SetActive(true);
 
+    }
 
     public void SelectItem(int _no, Texture _texture)
     {

@@ -20,6 +20,10 @@ public class MyNFTCollection : MonoBehaviour
     [SerializeField] RawImage purchaseItemImg;
     [SerializeField] TMP_Text purchaseItemText;
 
+
+    [SerializeField] GameObject mainPanel;
+    [SerializeField] GameObject loadingPanel;
+
     int currentSelectedItem = -1;
 
     private void Awake()
@@ -32,28 +36,40 @@ public class MyNFTCollection : MonoBehaviour
     {
         ClosePurchasePanel();
 
-       /* if (CovalentManager.loadingData)
-        {
-            MessaeBox.insta.showMsg("Loading Data", true);
-            CloseItemPanel();
-            return;
-        }*/
 
+        mainPanel.SetActive(false);
+        loadingPanel.SetActive(true);
+        
         foreach (Transform child in itemParent)
         {
             Destroy(child.gameObject);
         }
+        CovalentManager.insta.GetNFTUserBalance();
+
+        StopCoroutine(instantiateShop());
+        StartCoroutine(instantiateShop());
+
+
+      
+       
+    }
+    IEnumerator instantiateShop()
+    {
+        yield return new WaitUntil(() => !CovalentManager.insta.loadingData);
 
         for (int i = 0; i < CovalentManager.insta.myTokenID.Count; i++)
         {
             var temp = Instantiate(itemButtonPrefab, itemParent);
-            temp.GetComponent<RawImage>().texture = DatabaseManager.allMetaDataServer[Int32.Parse(CovalentManager.insta.myTokenID[i])-400].imageTexture;
+            temp.GetComponent<RawImage>().texture = DatabaseManager.allMetaDataServer[Int32.Parse(CovalentManager.insta.myTokenID[i]) - 400].imageTexture;
             var tempNo = Int32.Parse(CovalentManager.insta.myTokenID[i]) - 400;
             var tempTexture = temp.GetComponent<RawImage>().texture;
             temp.GetComponent<Button>().onClick.AddListener(() => SelectItem(tempNo, tempTexture));
         }
 
-       
+
+        loadingPanel.SetActive(false);
+        mainPanel.SetActive(true);
+
     }
 
     public void SelectItem(int _no, Texture _texture)

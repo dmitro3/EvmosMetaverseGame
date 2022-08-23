@@ -691,12 +691,14 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         if (inShootingMode)
         {
+            bool won = false;
             Cursor.lockState = CursorLockMode.None;
             tController.isDragging = false;
             CameraSwitcher.SwitchCamera(MetaManager.insta.playerCam);
 
             if (balloonBursted >= 5 && DatabaseManager.Instance)
             {
+                won = true;
                 LocalData data = DatabaseManager.Instance.GetLocalData();
                 data.score++;
                 DatabaseManager.Instance.UpdateData(data);
@@ -718,6 +720,8 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
             ToggleGun(false);
             Text_shootTimer.gameObject.SetActive(false);
             Text_shootCounter.gameObject.SetActive(false);
+
+            UIManager.insta.OpenGameCompleteUI(won, 0);
         }
     }
     IEnumerator LerpVector_Cam_Offset(Vector3 position, float time)
@@ -969,7 +973,7 @@ public class MyCharacter : MonoBehaviourPunCallbacks, IOnEventCallback
             Text_shootTimer.gameObject.SetActive(false);
             Text_shootCounter.gameObject.SetActive(false);
 
-            ToggleMovement(true);
+            UIManager.insta.OpenGameCompleteUI(won,1);
             ThrowArea.Instance.ResetGame();
         }
     }
