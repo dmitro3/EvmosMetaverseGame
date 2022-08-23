@@ -104,7 +104,7 @@ public class EvmosManager : MonoBehaviour
         loginBTN.SetActive(false);
         SingletonDataManager.userethAdd = account;
         CovalentManager.insta.GetNFTUserBalance();
-        Debug.Log("Balace " + await CheckNFTBalance());
+       // Debug.Log("Balace " + await CheckNFTBalance());
        
 #endif
 
@@ -132,10 +132,10 @@ public class EvmosManager : MonoBehaviour
         }
         // load next scene
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-
+        SingletonDataManager.userethAdd = account;
         playBTN.SetActive(true);
         loginBTN.SetActive(false);
-
+        CovalentManager.insta.GetNFTUserBalance();
         //CoinBuyOnSendContract(0);
     }
 
