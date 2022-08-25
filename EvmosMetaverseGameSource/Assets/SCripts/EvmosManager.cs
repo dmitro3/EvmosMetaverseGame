@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Defective.JSON;
 using System;
 using System.Collections;
@@ -6,7 +7,6 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
-
 public class EvmosManager : MonoBehaviour
 {
     #region Singleton
@@ -29,6 +29,12 @@ public class EvmosManager : MonoBehaviour
 
     // address of contract
     public const string contract = "0x2341B6A39c384139AE77EA05a6065368070226Ee";
+
+    const string abiERC20 = "[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"initialSupply\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"dailyPrize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"subtractedValue\",\"type\":\"uint256\"}],\"name\":\"decreaseAllowance\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSmartContractBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_account\",\"type\":\"address\"}],\"name\":\"getuserBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_account\",\"type\":\"address\"}],\"name\":\"getuserTokeStatus\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"addedValue\",\"type\":\"uint256\"}],\"name\":\"increaseAllowance\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply_\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"withdrawErc20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]";
+
+
+    // address of contract
+    const string contractERC20 = "0x4047FFFf353aC1b2DA1Add629bF51d1da726cF94";
 
     const string chain = "evmos";
     // set network mainnet, testnet
@@ -59,6 +65,9 @@ public class EvmosManager : MonoBehaviour
     [SerializeField] GameObject playBTN;
     [SerializeField] GameObject loginBTN;
 
+
+    public static bool tokenAvailable = false;
+    public static string tokenBalance = "";
 
     private void Start()
     {
@@ -92,7 +101,7 @@ public class EvmosManager : MonoBehaviour
             _status.text = "connected : " + account;
             CheckUserBalance();
 
-           
+
 
             if (DatabaseManager.Instance)
             {
@@ -104,8 +113,14 @@ public class EvmosManager : MonoBehaviour
         loginBTN.SetActive(false);
         SingletonDataManager.userethAdd = account;
         CovalentManager.insta.GetNFTUserBalance();
-       // Debug.Log("Balace " + await CheckNFTBalance());
-       
+        // Debug.Log("Balace " + await CheckNFTBalance());
+
+        // getDailyToken();
+        //getTokenBalance();
+        checkTokenGetStatus();
+        getTokenBalance();
+        //
+
 #endif
 
     }
@@ -137,8 +152,131 @@ public class EvmosManager : MonoBehaviour
         loginBTN.SetActive(false);
         CovalentManager.insta.GetNFTUserBalance();
         //CoinBuyOnSendContract(0);
+
+        checkTokenGetStatus();
+        getTokenBalance();
     }
 
+    #region ERC20
+    async public static void getDailyToken()
+    {
+        Debug.Log("Redeem started");
+        object[] inputParams = { };
+        string method = "dailyPrize"; // buyBurnItem";// "buyCoins";
+
+        // array of arguments for contract
+        string args = Newtonsoft.Json.JsonConvert.SerializeObject(inputParams);
+        // value in wei
+        string value = "";// Convert.ToDecimal(wei).ToString();
+        // gas limit OPTIONAL
+        string gasLimit = "";
+        // gas price OPTIONAL
+        string gasPrice = "";
+        string response = "";
+        // connects to user's browser wallet (metamask) to update contract state
+        try
+        {
+
+#if !UNITY_EDITOR
+                response = await Web3GL.SendContract(method, abiERC20, contractERC20, args, value, gasLimit, gasPrice);
+                Debug.Log(response);
+#else
+            string data = await EVM.CreateContractData(abiERC20, method, args);
+            response = await Web3Wallet.SendTransaction(chainId, contractERC20, "0", data, gasLimit, gasPrice);
+            Debug.Log(response);
+#endif
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+            if (MessaeBox.insta) MessaeBox.insta.showMsg("Server Error", true);
+        }
+
+        if (!string.IsNullOrEmpty(response))
+        {
+            Debug.Log("In check");
+            if (await CheckTransactionStatusWithTransID(response))
+            {
+                Debug.Log("Pass Bal");
+                getTokenBalance();
+            }
+            else
+            {
+                Debug.Log("Failed Bal");
+            }
+        }
+
+    }
+
+    async public static void getTokenBalance()
+    {
+        // smart contract method to call
+        string method = "getuserBalance";
+        // array of arguments for contract
+        object[] inputParams = { PlayerPrefs.GetString("Account") };
+        string args = Newtonsoft.Json.JsonConvert.SerializeObject(inputParams);
+        try
+        {
+            string response = await EVM.Call(chain, network, contractERC20, abiERC20, method, args, networkRPC);
+            Debug.Log(response);
+            float wei = float.Parse(response);
+            float decimals = 1000000000000000000; // 18 decimals
+            float eth = wei / decimals;
+            // print(Convert.ToDecimal(eth).ToString());
+            tokenBalance = Convert.ToDecimal(eth).ToString();
+            Debug.Log("Token Bal : " + Convert.ToDecimal(eth).ToString() + " | " + response);
+
+            if (DailyPrize.insta && UIManager.insta)
+            {
+                DailyPrize.insta.DailyShowUI(false);
+                DailyPrize.insta.UpdateTokenBalance();
+                if (UIManager.insta.GameplayUI.activeSelf && !UIManager.insta.StartUI.activeSelf)
+                {
+                    if (MessaeBox.insta) MessaeBox.insta.showMsg("Token redeemed", true);
+                }
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+
+    }
+
+    async public void checkTokenGetStatus()
+    {
+        // smart contract method to call
+        string method = "getuserTokeStatus";
+        // array of arguments for contract
+        object[] inputParams = { PlayerPrefs.GetString("Account", account) };
+        string args = Newtonsoft.Json.JsonConvert.SerializeObject(inputParams);
+        try
+        {
+            string response = await EVM.Call(chain, network, contractERC20, abiERC20, method, args, networkRPC);
+            Debug.Log(bool.Parse(response));
+            // print(Convert.ToDecimal(eth).ToString());
+            Debug.Log("Token checkTokenGetStatus : " + response);
+
+            if (bool.Parse(response))
+            {
+                //getDailyToken();
+                tokenAvailable = true;
+            }
+            else
+            {
+                tokenAvailable = false;
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e, this);
+        }
+
+    }
+    #endregion
 
     #region BuyCoins
     async public void CoinBuyOnSendContract(int _pack)
@@ -165,7 +303,7 @@ public class EvmosManager : MonoBehaviour
         // connects to user's browser wallet (metamask) to update contract state
         try
         {
-          
+
 
 #if !UNITY_EDITOR
             string response = await Web3GL.SendContract(method, abi, contract, args, value, gasLimit, gasPrice);
@@ -176,14 +314,15 @@ public class EvmosManager : MonoBehaviour
             string data = await EVM.CreateContractData(abi, method, args);
             string response = await Web3Wallet.SendTransaction(chainId, contract, value, data, gasLimit, gasPrice);
 
-           
+
             Debug.Log(response);
 #endif
 
             if (!string.IsNullOrEmpty(response))
             {
                 transID = response;
-                InvokeRepeating("CheckTransactionStatus", 1, 5);
+                //InvokeRepeating("CheckTransactionStatus", 1, 5);
+                CheckTransactionStatus(response);
                 if (MessaeBox.insta) MessaeBox.insta.showMsg("Your Transaction has been recieved\nCoins will reflect to your account once it is completed!", true);
             }
 
@@ -253,7 +392,7 @@ public class EvmosManager : MonoBehaviour
 
 
     #region CheckTime
-    public async Task<string> CheckTimeStatus()
+    public async UniTask<string> CheckTimeStatus()
     {
         // smart contract method to call
         string method = "getCurrentTime";
@@ -283,7 +422,7 @@ public class EvmosManager : MonoBehaviour
         try
         {
             string response = await EVM.AllErc1155(chain, network, PlayerPrefs.GetString("Account"), contract, first, skip);
-           // string response = await EVM.BalanceOf(chain, network, PlayerPrefs.GetString("Account"), contract, first, skip);
+            // string response = await EVM.BalanceOf(chain, network, PlayerPrefs.GetString("Account"), contract, first, skip);
             Debug.Log(response);
             return response;
         }
@@ -300,7 +439,7 @@ public class EvmosManager : MonoBehaviour
     {
         try
         {
-            
+
             string response = await EVM.BalanceOf(chain, network, PlayerPrefs.GetString("Account"), networkRPC);
             if (!string.IsNullOrEmpty(response))
             {
@@ -321,22 +460,38 @@ public class EvmosManager : MonoBehaviour
 
     #region CheckTRansactionStatus
     private string transID;
-    async public void CheckTransactionStatus()
+    async void CheckTransactionStatus(string _trxID)
     {
+        Debug.Log("Check CheckTransactionStatus ");
+        int _counter = 0;
+        HERE:
+        Debug.Log("Check Transaction " + _counter);
+        _counter++;
         try
         {
-            string txConfirmed = await EVM.TxStatus(chain, network, transID, networkRPC);
-            print(txConfirmed); // success, fail, pending
-            if (txConfirmed.Equals("success") || txConfirmed.Equals("fail"))
-            {
+            string txConfirmed = await EVM.TxStatus("", "", _trxID, networkRPC);
+            Debug.Log(txConfirmed); // success, fail, pending
 
-               // NonBurnNFTBuyContract(0, "ipfs://bafyreigkpnryq6t53skpbmfylegrp7wl3xkegzxq7ogimvnkzdceisya4a/metadata.json");
-                CancelInvoke("CheckTransactionStatus");
+            if (txConfirmed.Equals("success"))
+            {
+                Debug.Log("success sent");
                 if (DatabaseManager.Instance)
                 {
                     DatabaseManager.Instance.ChangeTransactionStatus(transID, txConfirmed);
                 }
-              
+            }
+            else
+            {
+                Debug.Log("failed sent");
+                if (_counter > 15)
+                {
+                    return;
+                }
+                else
+                {
+                    await UniTask.Delay(5000);
+                    goto HERE;
+                }
             }
 
         }
@@ -344,6 +499,45 @@ public class EvmosManager : MonoBehaviour
         {
             Debug.Log(e, this);
         }
+    }
+
+    async public static UniTask<bool> CheckTransactionStatusWithTransID(string _trxID)
+    {
+        Debug.Log("Check CheckTransactionStatusWithTransID ");
+        int _counter = 0;
+        HERE:
+        Debug.Log("Check Transaction " + _counter);
+        _counter++;
+        try
+        {
+            string txConfirmed = await EVM.TxStatus("", "", _trxID, networkRPC);
+            Debug.Log(txConfirmed); // success, fail, pending
+
+            if (txConfirmed.Equals("success"))
+            {
+                Debug.Log("success sent");
+                return true;
+            }
+            else
+            {
+                Debug.Log("failed sent");
+                if (_counter > 15)
+                {
+                    return false;
+                }
+                else
+                {
+                    await UniTask.Delay(5000);
+                    goto HERE;
+                }
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+        return false;
     }
     async public void CheckDatabaseTransactionStatus(string Id)
     {
@@ -359,13 +553,13 @@ public class EvmosManager : MonoBehaviour
                     DatabaseManager.Instance.ChangeTransactionStatus(Id, txConfirmed);
                 }
             }
-           
+
 
 
         }
         catch (Exception e)
         {
-            Debug.Log(e, this);           
+            Debug.Log(e, this);
         }
     }
 
@@ -374,7 +568,7 @@ public class EvmosManager : MonoBehaviour
     #region getMetaData
     async public void getMetaData()
     {
-        
+
         try
         {
             string response = await ERC1155.URI(chain, network, contract, "400", networkRPC);
@@ -389,25 +583,25 @@ public class EvmosManager : MonoBehaviour
 
     #region NFTUploaded
 
-  
+
     public void purchaseItem(int _id, bool _skin)
     {
         Debug.Log("purchaseItem");
 
         MetadataNFT meta = new MetadataNFT();
 
-       
-            meta.itemid = DatabaseManager.allMetaDataServer[_id].itemid;
-            meta.name = DatabaseManager.allMetaDataServer[_id].name;
-            meta.description = DatabaseManager.allMetaDataServer[_id].description;
-            meta.image = DatabaseManager.allMetaDataServer[_id].imageurl;
 
-            StartCoroutine(UploadNFTMetadata(Newtonsoft.Json.JsonConvert.SerializeObject(meta), _id, _skin));
-       
+        meta.itemid = DatabaseManager.allMetaDataServer[_id].itemid;
+        meta.name = DatabaseManager.allMetaDataServer[_id].name;
+        meta.description = DatabaseManager.allMetaDataServer[_id].description;
+        meta.image = DatabaseManager.allMetaDataServer[_id].imageurl;
+
+        StartCoroutine(UploadNFTMetadata(Newtonsoft.Json.JsonConvert.SerializeObject(meta), _id, _skin));
+
     }
     IEnumerator UploadNFTMetadata(string _metadata, int _id, bool _skin)
     {
-        if(MessaeBox.insta) MessaeBox.insta.showMsg("NFT purchase process started\nThis can up to minute", false);
+        if (MessaeBox.insta) MessaeBox.insta.showMsg("NFT purchase process started\nThis can up to minute", false);
         Debug.Log("Creating and saving metadata to IPFS..." + _metadata);
         WWWForm form = new WWWForm();
         form.AddField("meta", _metadata);
@@ -422,12 +616,12 @@ public class EvmosManager : MonoBehaviour
             {
                 Debug.Log(www.error);
                 Debug.Log("UploadNFTMetadata upload error " + www.downloadHandler.text);
-                
+
                 if (_skin)
                 {
                     if (MessaeBox.insta)
                     {
-                       /// MessaeBox.insta.ShowRetryPopup(_id);
+                        /// MessaeBox.insta.ShowRetryPopup(_id);
                     }
                 }
                 else
@@ -449,7 +643,7 @@ public class EvmosManager : MonoBehaviour
                     //SingletonDataManager.tokenID = j.GetField("value").GetField("ipnft").stringValue; //ipnft
                     Debug.Log("Metadata saved successfully");
                     //PurchaseItem(cost, _id);
-                    if(!_skin) NonBurnNFTBuyContract(_id, j.GetField("value").GetField("url").stringValue);
+                    if (!_skin) NonBurnNFTBuyContract(_id, j.GetField("value").GetField("url").stringValue);
                 }
             }
         }

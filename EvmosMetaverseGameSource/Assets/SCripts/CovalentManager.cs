@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+
+using Cysharp.Threading.Tasks;
+
+
 public class CovalentManager : MonoBehaviour
 {
     public static CovalentManager insta;
@@ -31,20 +35,21 @@ public class CovalentManager : MonoBehaviour
 
     public void GetNFTUserBalance()
     {
-        if(!loadingData) StartCoroutine(GetNFTBalance());
+        //if(!loadingData) StartCoroutine(GetNFTBalance());
+        if(!loadingData) GetNFTBalance();
         else Debug.Log("Already loading GetNFTBalance");
     }
-    IEnumerator GetNFTBalance()
+    async public void GetNFTBalance()
     {
         loadingData = true;
         Debug.Log("GetNFTBalance");
         //yield return new WaitForSeconds(1f);
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(BalanceFetchPreURL + SingletonDataManager.userethAdd + BalanceFetchPostURL))
+        using (UnityWebRequest webRequest =  UnityWebRequest.Get(BalanceFetchPreURL + SingletonDataManager.userethAdd + BalanceFetchPostURL))
         {
 
             webRequest.timeout = 60;
             // Request and wait for the desired page.
-            yield return webRequest.SendWebRequest();
+            await webRequest.SendWebRequest();
 
             //string[] pages = uri.Split('/');
             //int page = pages.Length - 1;
@@ -108,7 +113,9 @@ public class CovalentManager : MonoBehaviour
 
         }
 
-        yield return new WaitForSeconds(0.5f);
+       await UniTask.Delay(500);
+        
+       // yield return new WaitForSeconds(0.5f);
         loadingData = false;
     }
 
