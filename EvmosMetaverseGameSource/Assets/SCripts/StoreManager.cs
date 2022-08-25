@@ -131,14 +131,19 @@ public class StoreManager : MonoBehaviour
             // NFTPurchaser.insta.StartCoroutine(NFTPurchaser.insta.UploadNFTMetadata(Newtonsoft.Json.JsonConvert.SerializeObject(meta), SingletonDataManager.metanftlocalData[currentSelectedItem].cost, SingletonDataManager.metanftlocalData[currentSelectedItem].itemid));
             EvmosManager.Instance.purchaseItem(currentSelectedItem,false);
 
-            data.score -= DatabaseManager.allMetaDataServer[currentSelectedItem].cost;
-            DatabaseManager.Instance.UpdateData(data);
+            
         }
         else
         {
             Debug.Log("not enough money");
             MessaeBox.insta.showMsg("No enough coins\nFight to earn coins", true);
         }
+    }
+
+    public void DeductCoins(int _no) {
+        LocalData data = DatabaseManager.Instance.GetLocalData();
+        data.score -= DatabaseManager.allMetaDataServer[_no].cost;
+        DatabaseManager.Instance.UpdateData(data);
     }
 
     public void ClosePurchasePanel()

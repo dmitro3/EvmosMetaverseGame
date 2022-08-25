@@ -83,6 +83,12 @@ public class CovalentManager : MonoBehaviour
                             var _add = _data.GetField("data").GetField("items")[i].GetField("contract_address").stringValue.ToLower();
                             if (EvmosManager.contract.ToLower().Equals(_add))
                             {
+                                if (!_data.GetField("data").GetField("items")[i].GetField("nft_data").isArray)
+                                {
+                                    loadingData = false;
+                                    return;
+                                }
+
                                 if (_data.GetField("data").GetField("items")[i].GetField("nft_data").list.Count > 0)
                                 {
                                     Debug.Log("Found :" + _add + " | NFT" + _data.GetField("data").GetField("items")[i].GetField("nft_data").list.Count);

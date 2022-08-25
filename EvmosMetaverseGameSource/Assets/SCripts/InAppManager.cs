@@ -19,6 +19,8 @@ public class InAppManager : MonoBehaviour
     [SerializeField] TMP_Text purchaseItemText;
     [SerializeField] TMP_Text purchaseItemCostText;
 
+    [SerializeField] TMP_Text userBalance;
+
     int currentSelectedItem = -1;
 
     [SerializeField] Transform itemParent;
@@ -29,6 +31,8 @@ public class InAppManager : MonoBehaviour
     {
         insta = this;
         this.gameObject.SetActive(false);
+
+        EvmosManager.Instance.CheckUserBalance();
     }
 
     public void SelectItem(int _no, Texture _texture)
@@ -42,6 +46,10 @@ public class InAppManager : MonoBehaviour
         purchaseItemCostText.text = SingletonDataManager.metanftlocalData[_no].cost.ToString();
 
 
+    }
+
+    public void UpdateBalance() {
+        userBalance.text = "Balance : " + EvmosManager.userBalance;
     }
 
     public void purchaseItem(int index)
