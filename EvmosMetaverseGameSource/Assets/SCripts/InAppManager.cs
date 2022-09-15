@@ -35,6 +35,11 @@ public class InAppManager : MonoBehaviour
         EvmosManager.Instance.CheckUserBalance();
     }
 
+    private void OnEnable()
+    {
+        EvmosManager.Instance.CheckUserBalance();
+    }
+
     public void SelectItem(int _no, Texture _texture)
     {
         Debug.Log("Selected item " + _no);
