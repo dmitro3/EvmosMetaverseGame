@@ -8,6 +8,7 @@ Leisure is Metaverse, DeFi and NFT-1155, ERC-20 token based fun and enteraining 
 - Decentralized finance system with in-app items with evmos
 - Daily game reward as ERC-20 token
 - NFT 1155 as game virtual item
+- Create your virtual world with NFT, Visit and get visited by other players
 - Voice chat with other online players to interact
 
 
