@@ -14,18 +14,18 @@ Leisure is Metaverse, DeFi and NFT-1155, ERC-20 token based fun and enteraining 
 - [Evmos Testnet for DeFi, Token ERC-20 and NFT-1155](https://github.com/MoralisCronosHack-2022/CronMoralis_MetaWorld/blob/main/Cronos.md)
 - Remix IDE used to create smart contract for ERC-1155 NFT, ERC-20 game token and in-app purchase for coins
 
-### ERC-20 game token Smart Contract Address : 0xd171bA11cA2DB1A6E1159d0CbD2f5Ff60e2Ec3b9
-Evmos - Testnet : https://testnet.cronoscan.com/token/0xd171bA11cA2DB1A6E1159d0CbD2f5Ff60e2Ec3b9
+### ERC-20 game token (EvMeta) Smart Contract Address : 0x6c2cCf136C933Bc68Bb11E07FcfD769fa71F2168
+Evmos - Testnet : https://evm.evmos.dev/token/0x6c2cCf136C933Bc68Bb11E07FcfD769fa71F2168
 
-### NFT-1155 and In-Game Purchase Smart Contract Address : 0xe538B088711a6A7e9C3f97933F4622ebD7856287
-Evmos - Testnet : https://testnet.cronoscan.com/address/0xe538B088711a6A7e9C3f97933F4622ebD7856287
+### NFT-1155 and In-Game Purchase Smart Contract Address : 0x03e8be95D606356956d687e5239c7709D90DA32c
+Evmos - Testnet : https://evm.evmos.dev/address/0x03e8be95D606356956d687e5239c7709D90DA32c
 
 
 ### Leisure - (Play - Talk - Challenge)
-![Metaverse Game](/Images/CronosMoralis5.jpg)
+![Metaverse Game](/Images/Evmos1.jpg)
 
 ### DeFi - In game purchase with cronos
-![Leisure Game](/Images/CronosMoralis2.jpg)
+![Leisure Game](/Images/Evmos3.jpg)
 
 ### NFT-1155 as game item and can be used in virtual world
-![Leisure Game](/Images/CronosMoralis3.jpg)
+![Leisure Game](/Images/Evmos2.jpg)
