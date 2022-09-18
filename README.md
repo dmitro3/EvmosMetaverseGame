@@ -11,7 +11,7 @@ Leisure is Metaverse, DeFi and NFT-1155, ERC-20 token based fun and enteraining 
 
 ## Technologies
 - Unity game engine for game development and firebase to save userdata
-- [Evmos Testnet for DeFi, Token ERC-20 and NFT-1155](https://github.com/MoralisCronosHack-2022/CronMoralis_MetaWorld/blob/main/Cronos.md)
+- [Evmos Testnet for DeFi, Token ERC-20 and NFT-1155](https://github.com/EvmosHack/EvmosMetaverseGame/blob/main/Evmos.md)
 - Remix IDE used to create smart contract for ERC-1155 NFT, ERC-20 game token and in-app purchase for coins
 
 ### ERC-20 game token (EvMeta) Smart Contract Address : 0x6c2cCf136C933Bc68Bb11E07FcfD769fa71F2168
