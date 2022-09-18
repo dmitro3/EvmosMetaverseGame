@@ -24,7 +24,7 @@ Evmos - Testnet : https://evm.evmos.dev/address/0x03e8be95D606356956d687e5239c77
 ### Leisure - (Play - Talk - Challenge)
 ![Metaverse Game](/Images/Evmos1.jpg)
 
-### DeFi - In game purchase with cronos
+### DeFi - In game purchase with evmos
 ![Leisure Game](/Images/Evmos3.jpg)
 
 ### NFT-1155 as game item and can be used in virtual world
